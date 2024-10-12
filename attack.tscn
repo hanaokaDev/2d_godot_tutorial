@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://b68vkel0q2ikt"]
+
+[ext_resource type="Script" path="res://attack.gd" id="1_xupfu"]
+[ext_resource type="Texture2D" uid="uid://bnw5nc8extr4r" path="res://assets/images/attack.png" id="2_1xcgy"]
+[ext_resource type="AudioStream" uid="uid://cns5rc7tt1hqj" path="res://assets/sounds/attack.wav" id="3_151om"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ul85k"]
+radius = 20.0
+
+[node name="Attack" type="Area2D"]
+script = ExtResource("1_xupfu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ul85k")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_1xcgy")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_151om")
+autoplay = true
+
+[connection signal="body_entered" from="." to="." method="_on_collision"]

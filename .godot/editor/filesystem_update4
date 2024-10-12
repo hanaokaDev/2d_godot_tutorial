@@ -1,0 +1,7 @@
+res://main.tscn
+res://player.gd
+res://item.gd
+res://enemy.gd
+res://attack.gd
+res://attack.tscn
+res://goal.gd

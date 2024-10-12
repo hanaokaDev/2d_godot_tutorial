@@ -4,13 +4,12 @@ extends CharacterBody2D
 @export var WALK_SPEED = 250
 # 자녀 노드의 AnimatedSprite를 취득한다
 @onready var sprite = $AnimatedSprite2D
-# 이동 방향을 (0,0)으로 초기화한다
+# 이동 방향을 (0, 0)으로 초기화한다
 @onready var direction = Vector2(0,0)
 
 # 중력과 점프력
 @export var GRAVITY = 15
 @export var JUMP_POWER = 450
-
 # 지면과의 접촉 판정에 이용하는 RayCast2D
 @onready var raycast2d = $RayCast2D
 
@@ -45,3 +44,59 @@ func _physics_process(delta):
 
 	self.velocity = direction
 	self.move_and_slide()
+
+##### 스크립트 3-2에서 추가 #####
+
+# HP를 작성한다
+@onready var hp=100
+
+
+func hp_up(point):
+	print("HP recovery : +", point)
+	hp+=point
+	if hp>100:
+		hp=100
+
+############################
+
+##### 스크립트 3-4에서 추가 #####
+
+func gameover():
+	# 스크립트 3-12에서 삭제
+	# print("Gameover")
+	
+	# 스크립트 3-12에서 추가
+	var gameover = $"/root/Node2D/Gameover"
+	gameover.z_index = 200
+	gameover.visible=true
+	get_tree().paused=true
+
+
+func hp_down(point):
+	print("HP decrease : -", point)
+	hp-=point
+	if hp<0:
+		gameover()
+
+############################
+
+##### 스크립트 3-8에서 추가 #####
+
+var attack = preload("res://attack.tscn")
+
+
+func _process(delta):
+	# 스크립트 3-10에서 추가
+	$"/root/Node2D/ProgressBar".value=hp
+	
+	if Input.is_action_just_pressed("ui_select"):
+		var attack_instance = attack.instantiate()
+		attack_instance.z_index=100
+		
+		if sprite.flip_h:
+			attack_instance.init(self.position,-1)
+		else:
+			attack_instance.init(self.position,1)
+		get_parent().add_child(attack_instance)
+
+############################
